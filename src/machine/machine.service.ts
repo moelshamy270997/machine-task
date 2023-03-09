@@ -1,6 +1,6 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateMachineDto } from 'src/dto/Machine.dto';
+import { CreateMachineDto, UpdateMachineDto } from 'src/dto/Machine.dto';
 import { Repository } from 'typeorm';
 import { Machine } from './machine.entity';
 import { MachineType, MachineStatus} from './machine.entity';
@@ -11,8 +11,13 @@ export class MachineService {
     @InjectRepository(Machine)
     private machinesRepository: Repository<Machine>,
   ) {}
+  
+  // GraphQL funtion to get machines, using optional parameters
+  async findAll_(id: string, type: MachineType, status: MachineStatus, isInternal: boolean): Promise<Machine[]> {
+    return this.machinesRepository.find({ where: { id, type, status, isInternal} });
+  }
 
-  async create(machine: CreateMachineDto): Promise<CreateMachineDto> {
+  async create(machine: CreateMachineDto): Promise<Machine> {
     return this.machinesRepository.save(machine);
   }
 
@@ -30,7 +35,7 @@ export class MachineService {
     return machine;
   }
 
-  async update(id: string, machine: CreateMachineDto): Promise<Machine> {
+  async update(id: string, machine: UpdateMachineDto): Promise<Machine> {
     await this.machinesRepository.update(id, machine);
     return this.machinesRepository.findOneBy({ id: id });
   }
@@ -46,4 +51,5 @@ export class MachineService {
     await this.machinesRepository.delete(id);
     return machine;
   }
+  
 }

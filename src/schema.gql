@@ -1,0 +1,50 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Machine {
+  id: String!
+  name: String!
+  type: MachineType!
+  status: MachineStatus!
+  location: String!
+  isInternal: Boolean!
+}
+
+enum MachineType {
+  Press
+  Grinding
+  Drilling
+}
+
+enum MachineStatus {
+  Active
+  Inactive
+  Broken
+}
+
+type Query {
+  machines(id: String, type: MachineType, status: MachineStatus, isInternal: Boolean): [Machine!]!
+}
+
+type Mutation {
+  createMachine(machine: CreateMachineDto!): Machine!
+  updateMachine(id: String!, machine: UpdateMachineDto!): Machine!
+  deleteMachine(id: String!): Machine!
+}
+
+input CreateMachineDto {
+  name: String!
+  type: MachineType!
+  status: MachineStatus!
+  location: String!
+  isInternal: Boolean!
+}
+
+input UpdateMachineDto {
+  name: String
+  type: MachineType
+  status: MachineStatus
+  location: String
+  isInternal: Boolean
+}

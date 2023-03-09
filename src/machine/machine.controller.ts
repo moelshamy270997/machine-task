@@ -1,16 +1,16 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, Query, HttpCode, UsePipes, ValidationPipe, ParseUUIDPipe } from '@nestjs/common';
 import { MachineService } from './machine.service';
 import { Machine, MachineType, MachineStatus } from './machine.entity';
-import { CreateMachineDto } from '../dto/Machine.dto';
+import { CreateMachineDto, UpdateMachineDto } from '../dto/Machine.dto';
 
 @Controller('machine')
 export class MachineController {
     constructor(private readonly machinesService: MachineService) {}
-
+    
     @Post()
     @HttpCode(200) // instead of 201
     @UsePipes(ValidationPipe)
-    async create(@Body() createMachineDto: CreateMachineDto): Promise<CreateMachineDto> {
+    async create(@Body() createMachineDto: CreateMachineDto): Promise<Machine> {
         return this.machinesService.create(createMachineDto);
     }
     
@@ -30,7 +30,7 @@ export class MachineController {
     
     @Put('/:id')
     @UsePipes(ValidationPipe)
-    async update(@Param('id', ParseUUIDPipe) id: string, @Body() machine: CreateMachineDto): Promise<Machine> {
+    async update(@Param('id', ParseUUIDPipe) id: string, @Body() machine: UpdateMachineDto): Promise<Machine> {
         return this.machinesService.update(id, machine);
     }
 
@@ -38,5 +38,6 @@ export class MachineController {
     async delete(@Param('id', ParseUUIDPipe) id: string): Promise<Machine> {
         return this.machinesService.delete(id);
     }
+    
 }
 
