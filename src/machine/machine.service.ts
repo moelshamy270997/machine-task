@@ -36,6 +36,12 @@ export class MachineService {
   }
 
   async update(id: string, machine: UpdateMachineDto): Promise<Machine> {
+    const machine_ = await this.machinesRepository.findOneBy({ id: id });
+
+    if (machine_ == null) {
+      throw new HttpException('Machine not found', HttpStatus.NOT_FOUND);
+    }
+
     await this.machinesRepository.update(id, machine);
     return this.machinesRepository.findOneBy({ id: id });
   }
