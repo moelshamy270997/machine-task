@@ -14,21 +14,21 @@ export class MachineService {
   
   // GraphQL funtion to get machines, using optional parameters
   async findAll_(id: string, type: MachineType, status: MachineStatus, isInternal: boolean): Promise<Machine[]> {
-    return this.machinesRepository.find({ where: { id, type, status, isInternal} });
+    return await this.machinesRepository.find({ where: { id, type, status, isInternal} });
   }
 
   async create(machine: CreateMachineDto): Promise<Machine> {
-    return this.machinesRepository.save(machine);
+    return await this.machinesRepository.save(machine);
   }
 
   async findAll(type: MachineType, status: MachineStatus, isInternal: boolean): Promise<Machine[]> {
-    return this.machinesRepository.find({ where: { type, status, isInternal} });
+    return await this.machinesRepository.find({ where: { type, status, isInternal} });
   }
 
   async findById(id: string): Promise<Machine> {
-    const machine = this.machinesRepository.findOneBy({ id: id });
+    const machine = await this.machinesRepository.findOneBy({ id: id });
 
-    if ((await machine) == null) {
+    if ( machine == null) {
       throw new HttpException('Machine not found', HttpStatus.NOT_FOUND);
     }
 
@@ -43,7 +43,7 @@ export class MachineService {
     }
 
     await this.machinesRepository.update(id, machine);
-    return this.machinesRepository.findOneBy({ id: id });
+    return await this.machinesRepository.findOneBy({ id: id });
   }
 
   async delete(id: string): Promise<Machine> {

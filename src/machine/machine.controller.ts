@@ -11,7 +11,7 @@ export class MachineController {
     @HttpCode(200) // instead of 201
     @UsePipes(ValidationPipe)
     async create(@Body() createMachineDto: CreateMachineDto): Promise<Machine> {
-        return this.machinesService.create(createMachineDto);
+        return await this.machinesService.create(createMachineDto);
     }
     
     @Get()
@@ -20,23 +20,39 @@ export class MachineController {
         @Query('status') status: MachineStatus,
         @Query('internal') internal: boolean
         ): Promise<Machine[]> {
-        return this.machinesService.findAll(type, status, internal);
+        return await this.machinesService.findAll(type, status, internal).then((res) =>  {
+            return res;
+        }).catch((error) => {
+            return error;
+        });;
     }
 
     @Get('/:id')
     async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Machine> {
-        return this.machinesService.findById(id);
+        return await this.machinesService.findById(id).then((res) =>  {
+            return res;
+        }).catch((error) => {
+            return error;
+        });
     }
     
     @Put('/:id')
     @UsePipes(ValidationPipe)
     async update(@Param('id', ParseUUIDPipe) id: string, @Body() machine: UpdateMachineDto): Promise<Machine> {
-        return this.machinesService.update(id, machine);
+        return await this.machinesService.update(id, machine).then((res) =>  {
+            return res;
+        }).catch((error) => {
+            return error;
+        });;
     }
 
     @Delete('/:id')
     async delete(@Param('id', ParseUUIDPipe) id: string): Promise<Machine> {
-        return this.machinesService.delete(id);
+        return await this.machinesService.delete(id).then((res) =>  {
+            return res;
+        }).catch((error) => {
+            return error;
+        });;
     }
     
 }

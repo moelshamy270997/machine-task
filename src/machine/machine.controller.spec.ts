@@ -3,7 +3,6 @@ import { MachineController } from './machine.controller';
 import { MachineService } from './machine.service';
 import { Machine, MachineType, MachineStatus } from './machine.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CreateMachineDto } from '../dto/Machine.dto';
 
 describe('MachineController', () => {
   
@@ -56,7 +55,7 @@ describe('MachineController', () => {
         isInternal: false,
         };
 
-        const machine = new CreateMachineDto();
+        const machine = new Machine();
         machine.name = machineData.name;
         machine.type = machineData.type;
         machine.status = machineData.status;
@@ -100,4 +99,5 @@ describe('MachineController', () => {
         expect(result).toEqual(machine1);
     });
   });
+  
 });
